@@ -59,3 +59,7 @@ Instead of using global state, you can get around this in one of the two followi
 * using methods or closures as your handlers
 
 Both approaches - or a combination of the two - are appropriate in different circumstances.
+
+## License
+
+MIT license. See the LICENSE file.
