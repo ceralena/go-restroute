@@ -5,8 +5,8 @@
 go-restroute provides a [Go](https://golang.org) package - `restroute` - for
 defining the routes of a RESTful HTTP service.
 
-`restroute has no opinions about the controller or anything below that, beyond
-`specifying that a route handler must have a particular function signature.
+restroute has no opinions about the controller or anything below that, beyond
+specifying that a route handler must have a particular function signature.
 
 Routes are specified as regular expressions, where match groups are parameters.
 
@@ -24,7 +24,7 @@ Design rationale:
 
 ## Usage
 
-The types exposed by the package:
+The types exposed by the package are:
 
 * `restroute.Request` - contains the state for a request
 * `restroute.Map`: a map of paths to MethodMap values
@@ -55,7 +55,7 @@ layer of an application should use a shared database connection pool.
 
 Instead of using global state, you can get around this in one of the two following ways:
 
-* function composition & middlewares
-* using methods as your handlers
+* function composition & middleware
+* using methods or closures as your handlers
 
 Both approaches - or a combination of the two - are appropriate in different circumstances.
