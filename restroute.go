@@ -23,7 +23,7 @@ var http_methods = []string{
 type Request struct {
 	W      http.ResponseWriter
 	R      *http.Request
-	Params map[string]string
+	Params map[string]string // Named matches from the URL
 }
 
 type Map map[string]MethodMap

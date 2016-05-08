@@ -15,7 +15,7 @@ See godoc for documentation: https://godoc.org/github.com/ceralena/go-restroute
 Design rationale:
 
 * just a handful of types to understand
-* prefer strongly typed function composition for middleware over dependency injection with reflect
+* prefer strongly typed function composition for middleware over dependency injection with `reflect`
 * do not assume or prevent the use of any other library - directly compatible with `net/http`
 * no ad-hoc syntax for routes and params - just regular expressions
 * no special logic for subroutes or precedence: the caller is expected to
@@ -39,7 +39,7 @@ route regular expression:
 	type Request struct {
 			W      http.ResponseWriter
 			R      *http.Request
-			Params map[string]string	
+			Params map[string]string // Named matches from the URL
 	}
 
 ## Examples
