@@ -12,7 +12,7 @@ Routes are specified as regular expressions, where match groups are parameters.
 
 See godoc for documentation: https://godoc.org/github.com/ceralena/go-restroute
 
-Design rationale:
+## Design Rationale
 
 * just a handful of types to understand
 * prefer strongly typed function composition for middleware over dependency injection with `reflect`
