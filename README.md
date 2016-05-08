@@ -24,6 +24,8 @@ See godoc for documentation: https://godoc.org/github.com/ceralena/go-restroute
 
 ## Usage
 
+Import `github.com/ceralena/go-restroute` in your package.
+
 The types exposed by the package are:
 
 * `restroute.Request` - contains the state for a request
