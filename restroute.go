@@ -1,4 +1,4 @@
-// package restroute implements a simple RESTful HTTP routing layer
+// Package restroute implements a simple RESTful HTTP routing layer
 package restroute
 
 import (
@@ -20,22 +20,26 @@ var http_methods = []string{
 }
 */
 
+// Request holds the state for a request, including any named matches parsed
+// from the route regular expression.. It's passed to Handlers when their route
+// matches.
 type Request struct {
 	W      http.ResponseWriter
 	R      *http.Request
 	Params map[string]string // Named matches from the URL
 }
 
+// Map is a map of route regular expressions to a MethodMap for each.
 type Map map[string]MethodMap
 
-// Prepare this map to be used as a HTTP handler.
+// Compile will prepare this map to be used as a HTTP handler.
 //
 // Fails if any of the MethodMap regular expressions are invalid.
 func (m Map) Compile() (http.Handler, error) {
 	return newRouter(m)
 }
 
-// Same as Compile(), but panics with any error.
+// MustCompile is the same as Compile(), but panics with any error.
 func (m Map) MustCompile() http.Handler {
 	h, err := m.Compile()
 	if err != nil {
@@ -44,8 +48,11 @@ func (m Map) MustCompile() http.Handler {
 	return h
 }
 
+// MethodMap is a map of HTTP request methods to handlers.
 type MethodMap map[string]Handler
 
+// Handler is a request handler function that takes a Request. It is called
+// when the route and method match.
 type Handler func(req Request)
 
 type router struct {

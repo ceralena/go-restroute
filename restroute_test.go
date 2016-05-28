@@ -116,7 +116,7 @@ type sht struct {
 	expectOutput string
 }
 
-var serveHttpTestCases = []struct {
+var serveHTTPTestCases = []struct {
 	m     Map
 	tests []sht
 }{
@@ -170,7 +170,7 @@ func startTestServer(m Map) (*testServer, error) {
 }
 
 func TestServeHTTP(t *testing.T) {
-	for _, c := range serveHttpTestCases {
+	for _, c := range serveHTTPTestCases {
 		// Start a server
 		s, err := startTestServer(c.m)
 
@@ -242,4 +242,3 @@ func TestBadServer(t *testing.T) {
 	t.FailNow()
 
 }
-

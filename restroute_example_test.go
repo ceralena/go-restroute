@@ -75,7 +75,7 @@ func ExampleMap_middleware() {
 	// handleJSON is our middleware - it takes a function that receives a
 	// request and returns some JSON, and returns an ordinary handler which
 	// can be used in restroute.Map.
-	handleJSON := func(handler func (req restroute.Request) interface{}) func(req restroute.Request) {
+	handleJSON := func(handler func(req restroute.Request) interface{}) func(req restroute.Request) {
 		fn := func(req restroute.Request) {
 			data := handler(req)
 			enc := json.NewEncoder(req.W)
