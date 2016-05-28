@@ -1,6 +1,6 @@
 # go-restroute
 
-[![Build Status](https://travis-ci.org/ceralena/go-restroute.svg?branch=master)](https://travis-ci.org/ceralena/go-restroute)
+[![Build Status](https://travis-ci.org/ceralena/go-restroute.svg?branch=master)](https://travis-ci.org/ceralena/go-restroute) [![codecov](https://codecov.io/gh/ceralena/go-restroute/branch/master/graph/badge.svg)](https://codecov.io/gh/ceralena/go-restroute) ![Go Report Card](https://goreportcard.com/badge/github.com/ceralena/go-restroute)](https://goreportcard.com/report/github.com/ceralena/go-restroute) [![GoDoc](https://godoc.org/github.com/stretchr/testify?status.svg)](https://godoc.org/github.com/stretchr/testify)
 
 go-restroute provides a [Go](https://golang.org) package - `restroute` - for
 defining the routes of a RESTful HTTP service.
