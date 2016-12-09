@@ -5,6 +5,7 @@ import (
 	"io"
 	"net"
 	"net/http"
+	"reflect"
 
 	"testing"
 )
@@ -219,19 +220,16 @@ func TestBadServer(t *testing.T) {
 	_, err := m.Compile()
 
 	if err == nil {
-		t.Error("Invalid map should fail compile")
-		t.FailNow()
+		t.Fatal("Invalid map should fail compile")
 	}
 
 	defer func() {
 		e := recover()
 		if err == nil {
-			t.Error("Should have panicked")
-			t.FailNow()
+			t.Fatal("Should have panicked")
 		}
 		if e.(error).Error() != err.Error() {
-			t.Error("Expected panic from MustCompile() to have the same error as Compile()")
-			t.FailNow()
+			t.Fatal("Expected panic from MustCompile() to have the same error as Compile()")
 		}
 	}()
 
@@ -241,4 +239,44 @@ func TestBadServer(t *testing.T) {
 	t.Error("MustCompile should panic")
 	t.FailNow()
 
+}
+
+func fakeHandler(req Request) {
+}
+
+var mergeTestCases = []struct {
+	maps      []Map
+	expectMap Map
+}{
+	{[]Map{}, Map{}},
+	{
+		[]Map{
+			Map{
+				"foo": MethodMap{"GET": fakeHandler},
+			},
+			Map{
+				"bar": MethodMap{"POST": fakeHandler},
+			},
+		},
+		Map{
+			"foo": MethodMap{"GET": fakeHandler},
+			"bar": MethodMap{"POST": fakeHandler},
+		},
+	},
+}
+
+func TestMerge(t *testing.T) {
+	for _, c := range mergeTestCases {
+		merged := Merge(c.maps...)
+
+		if len(merged) != len(c.expectMap) {
+			t.Fatalf("Merged map did not match expected map")
+		}
+
+		for route, mm := range c.expectMap {
+			if !reflect.DeepEqual(mm, c.expectMap[route]) {
+				t.Fatalf("Merged map did not match expected map")
+			}
+		}
+	}
 }

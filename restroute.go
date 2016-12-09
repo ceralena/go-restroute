@@ -48,6 +48,22 @@ func (m Map) MustCompile() http.Handler {
 	return h
 }
 
+// Merge merges a set of Maps into a single Map.
+//
+// If more than one map specifies the same route, the last one in the list
+// wins.
+func Merge(maps ...Map) Map {
+	merged := make(Map)
+
+	for _, m := range maps {
+		for k, v := range m {
+			merged[k] = v
+		}
+	}
+
+	return merged
+}
+
 // MethodMap is a map of HTTP request methods to handlers.
 type MethodMap map[string]Handler
 
