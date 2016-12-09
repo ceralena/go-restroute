@@ -94,7 +94,7 @@ func (rtr *router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
 		// TODO(Cera) - Clean this up; handle error
 		enc := json.NewEncoder(w)
-		enc.Encode(map[string]string{"error": "404 not found", "message": "No handler for " + r.URL.Path})
+		enc.Encode(map[string]string{"error": "404 not found", "message": fmt.Sprintf("No handler for '%s %s'", r.Method, r.URL.Path)})
 		return
 	}
 
