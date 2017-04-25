@@ -280,3 +280,84 @@ func TestMerge(t *testing.T) {
 		}
 	}
 }
+
+func TestApplyMiddleware(t *testing.T) {
+	var shouldContinue bool
+	var handlerCalled bool
+	var r Request
+
+	m := func(req *Request) bool {
+		return shouldContinue
+	}
+	h := func(req Request) {
+		handlerCalled = true
+	}
+
+	applied := ApplyMiddleware(m, h)
+
+	// Test that the handler is not called if the middleware returns false
+	shouldContinue = false
+	applied(r)
+	if handlerCalled {
+		t.Errorf("ApplyMiddleware should not call handler when middleware returns false")
+	}
+
+	// Test that the handler is called if the middleware returns true
+	shouldContinue = true
+	applied(r)
+	if !handlerCalled {
+		t.Errorf("ApplyMiddleware should call handler when middleware returns true")
+	}
+}
+
+func TestComposeMiddleware(t *testing.T) {
+	var m1ShouldContinue bool
+	var m2ShouldContinue bool
+	var handlerCalled bool
+	var r Request
+
+	m1 := func(req *Request) bool {
+		return m1ShouldContinue
+	}
+	m2 := func(req *Request) bool {
+		return m2ShouldContinue
+	}
+	h := func(req Request) {
+		handlerCalled = true
+	}
+
+	composed := ComposeMiddleware(m1, m2)
+	applied := ApplyMiddleware(composed, h)
+
+	// Test that the handler is not called if middleware 1 returns false
+	m1ShouldContinue = false
+	m2ShouldContinue = true
+	applied(r)
+	if handlerCalled {
+		t.Errorf("ApplyMiddleware should not call handler when any composed middleware returns false")
+	}
+
+	// Test that the handler is not called if middleware 2 returns false
+	m1ShouldContinue = true
+	m2ShouldContinue = false
+	applied(r)
+	if handlerCalled {
+		t.Errorf("ApplyMiddleware should not call handler when any composed middleware returns false")
+	}
+
+	// Test that the handler is not called if both middlewares return false
+	m1ShouldContinue = false
+	m2ShouldContinue = false
+	applied(r)
+	if handlerCalled {
+		t.Errorf("ApplyMiddleware should not call handler when all composed middlewares return false")
+	}
+
+	// Test that the handler is called if the middleware returns true
+	m1ShouldContinue = true
+	m2ShouldContinue = true
+	applied(r)
+	if !handlerCalled {
+		t.Errorf("ApplyMiddleware should call handler when all composed middlewares return true")
+	}
+}

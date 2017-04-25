@@ -170,3 +170,37 @@ func (cr *compiledRoute) match(u *url.URL) (map[string]string, bool) {
 
 	return params, true
 }
+
+// Middleware is any function that takes the restroute Request object.
+//
+// If the request pipeline should continue, the middleware must call next with
+// true; otherwise, it must call next with false.
+type Middleware func(req *Request) bool
+
+// ComposeMiddleware creates a new Middleware that composes all the provided
+// middlewares.
+//
+// The new Middleware calls the underlying Middlewares in order of first to
+// last by index in the arguments.
+func ComposeMiddleware(m ...Middleware) Middleware {
+	return func(req *Request) bool {
+		for i := 0; i < len(m); i++ {
+			res := m[i](req)
+			if !res {
+				return false
+			}
+		}
+		return true
+	}
+}
+
+// ApplyMiddleware returns a new Handler wrapped by the Middleware.
+func ApplyMiddleware(m Middleware, h Handler) Handler {
+	return func(req Request) {
+		res := m(&req)
+		if !res {
+			return
+		}
+		h(req)
+	}
+}
